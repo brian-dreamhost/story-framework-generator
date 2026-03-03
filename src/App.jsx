@@ -1,12 +1,28 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import InputForm from './components/InputForm.jsx'
 import FrameworkSection from './components/FrameworkSection.jsx'
 import { generateStoryFrameworks, exportAllFrameworks } from './utils/storyUtils.js'
+
+const TEST_DATA = {
+  brandName: 'DreamHost',
+  hero: 'small business owners and creative entrepreneurs who want a professional online presence without the tech headaches',
+  struggle: 'wasting 15+ hours/month wrestling with unreliable hosting, confusing server dashboards, and downtime that costs them customers and credibility',
+  transformation: 'launched a fast, secure website in under 10 minutes with 100% uptime, freeing them to focus on growing their business instead of troubleshooting tech',
+  yourRole: 'the hosting partner that handles all the technical complexity so entrepreneurs can focus on what they do best',
+  proofPoint: '1.5 million websites trust DreamHost with a 97-day money-back guarantee and 24/7 US-based expert support',
+  selectedTone: 'conversational',
+  industry: '',
+}
 
 export default function App() {
   const [frameworks, setFrameworks] = useState([])
   const [inputs, setInputs] = useState(null)
   const [isExporting, setIsExporting] = useState(false)
+  const inputFormRef = useRef(null)
+
+  const fillTestData = () => {
+    handleGenerate(TEST_DATA)
+  }
 
   const handleGenerate = (formInputs) => {
     setInputs(formInputs)
@@ -57,7 +73,7 @@ export default function App() {
 
   return (
     <div className="bg-glow bg-grid min-h-screen">
-      <div className="relative z-10 max-w-4xl mx-auto px-4 py-8 sm:py-12">
+      <div className="relative z-10 max-w-[1600px] mx-auto px-4 py-8 sm:py-12">
         {/* Breadcrumb */}
         <nav className="mb-8 text-sm text-galactic">
           <a href="https://seo-tools-tau.vercel.app/" className="text-azure hover:text-white transition-colors">Free Tools</a>
@@ -76,6 +92,16 @@ export default function App() {
           <p className="text-cloudy text-base sm:text-lg max-w-2xl mx-auto">
             Turn your brand story into 5 proven narrative frameworks with scoring, improvement tips, and platform-ready social posts. Enter your details once, get publish-ready copy for your About page, case studies, ads, and social media.
           </p>
+        </div>
+
+        <div className="flex justify-end mb-4">
+          <button
+            type="button"
+            onClick={fillTestData}
+            className="px-3 py-1.5 text-xs font-mono bg-prince/20 text-prince border border-prince/30 rounded hover:bg-prince/30 transition-colors focus:outline-none focus:ring-2 focus:ring-prince focus:ring-offset-2 focus:ring-offset-abyss"
+          >
+            Fill Test Data
+          </button>
         </div>
 
         {/* Input form */}
@@ -134,7 +160,9 @@ export default function App() {
 
             {/* Framework sections */}
             {frameworks.map((fw, i) => (
-              <FrameworkSection key={fw.id} framework={fw} index={i} />
+              <div key={fw.id} className="animate-slideUp" style={{ animationDelay: `${i * 0.08}s` }}>
+                <FrameworkSection framework={fw} index={i} />
+              </div>
             ))}
 
             {/* Bottom export */}
